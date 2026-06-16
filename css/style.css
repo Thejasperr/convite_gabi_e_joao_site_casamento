@@ -1,0 +1,810 @@
+@font-face {
+  font-family: "Amsterdam_Signature";
+  src: url("../fonts/Amsterdam_Signature.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --creme: #fff8ef;
+  --verde-oliva: #6f7354;
+  --dourado: #c7983e;
+  --vinho: #7a0805;
+  --marrom: #5b4636;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--creme);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  /* background: #7b6241; */
+  position: relative;
+}
+
+body.sem-scroll {
+  overflow: hidden;
+}
+
+/* Borda decorativa do site inteiro */
+
+body::before,
+body::after {
+  content: "";
+
+  top: 0;
+  height: 100vh;
+  width: 12px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent 2px,
+
+      #b78b2c 2px,
+      #d9bb63 3px,
+      #a87b20 4px,
+
+      transparent 4px,
+      transparent 7px,
+
+      #b78b2c 7px,
+      #d9bb63 8px,
+      #a87b20 9px,
+
+      transparent 9px
+    );
+}
+
+body::before {
+  left: 12px;
+}
+
+body::after {
+  right: 12px;
+}
+
+.site-border {
+  position: ABSOLUTE;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+
+    pointer-events: none;
+    z-index: 10;
+  border: 1px solid #b78b2c;
+}
+
+.site-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #d9bb63;
+}
+
+.site-border::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+
+    border: 1px solid #d8bc6a;
+}
+
+.convite-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* SITE POR BAIXO */
+.site-casamento {
+  min-height: 100vh;
+
+
+  color: var(--marrom);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(.96);
+  transition: 1s ease;
+  z-index: 101;
+  background-color: rgba(255,255,255,.35), rgba(255,255,255,.35);
+}
+
+.site-casamento::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../img/white-abstract-texture-background.jpg') repeat;
+  background-size: 500px;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.site-casamento.revelado {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* CARTA POR CIMA */
+.carta-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* DUAS PARTES */
+.porta {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)),
+    url("../img/background-carta.png");
+
+  background-repeat: no-repeat;
+  transition: transform 1.6s cubic-bezier(.77, 0, .18, 1);
+}
+
+.porta-esquerda {
+  left: 0;
+  background-position: left center;
+}
+
+.porta-direita {
+  right: 0;
+  background-position: right center;
+}
+
+/* efeito de dobra do envelope */
+.porta-esquerda::after,
+.porta-direita::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.20);
+}
+
+.porta-esquerda::after {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.porta-direita::after {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* linha central */
+.linha-dourada {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--dourado),
+    transparent
+  );
+  z-index: 0;
+}
+
+/* SELO */
+.selo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: clamp(170px, 24vw, 220px);
+  height: clamp(170px, 24vw, 220px);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.selo-container:hover .selo,
+.selo-container:focus-visible .selo {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.selo-container:focus-visible {
+  outline: 2px solid #b8860b;
+  outline-offset: 8px;
+  border-radius: 50%;
+}
+
+.selo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 127%;
+  max-width: 100px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
+  transition: transform 0.6s ease;
+}
+
+.texto-circular {
+  width: 100%;
+  height: 100%;
+  animation: girar 12s linear infinite;
+  pointer-events: none;
+  z-index: 510;
+}
+
+.texto-circular text {
+  fill: #b8860b;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.convite.aberto .conteudo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.convite.aberto .lado-esquerdo {
+  transform: translateX(-100%);
+}
+
+.convite.aberto .lado-direito {
+  transform: translateX(100%);
+}
+
+.convite.aberto .selo-container {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .selo-container {
+    width: 170px;
+    height: 170px;
+  }
+}
+
+
+/* QUANDO ABRIR */
+.carta-overlay.aberta .porta-esquerda {
+  transform: translateX(-100%);
+}
+
+.carta-overlay.aberta .porta-direita {
+  transform: translateX(100%);
+}
+
+.carta-overlay.aberta .selo-container {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.4);
+  pointer-events: none;
+  overflow-y: visible !important;
+}
+
+.carta-overlay.aberta .linha-dourada,
+.carta-overlay.aberta .clique-texto {
+  opacity: 0;
+  transition: .4s ease;
+}
+
+.carta-overlay.sumir {
+  pointer-events: none;
+}
+
+.titulo-gej {
+  font-family: "Amsterdam_Signature", cursive;
+  font-size: clamp(7rem, 8vw, 5rem);
+  color: var(--dourado);
+  margin-bottom: 0.5rem;
+}
+
+.divisor-coracao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.divisor-coracao .linha {
+  flex:1;
+  max-width:140px;
+  height:1px;
+  background:linear-gradient(to right, transparent,rgba(201,158,70,.5), transparent);
+}
+
+.divisor-coracao .coracao {
+  color: #c89b3c;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.coracao-grande {
+  color: #c89b3c;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.folhas-decorativas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.folha {
+    position: absolute;
+    user-select: none;
+}
+
+
+/* TOPO */
+
+.folha-topo-esquerda {
+    top: -20px;
+    left: 0px;
+    width: 120px;
+    transform: rotate(-20deg);
+}
+
+.folha-topo-direita {
+    top: 0px;
+    right: 0px;
+    width: 180px;
+    transform: rotate(20deg);
+}
+
+/* CENTRO */
+
+.folha-centro-esquerda {
+    top: 45%;
+    left: -10px;
+    width: 100px;
+    transform: rotate(-10deg);
+}
+
+.folha-centro-direita {
+    top: 45%;
+    right: -50px;
+    width: 100px;
+    transform: rotate(10deg);
+}
+
+/* RODAPÉ */
+
+.folha-baixo-esquerda {
+    bottom: -30px;
+    left: 0px;
+    width: 150px;
+    transform: rotate(25deg);
+
+}
+
+.folha-baixo-direita {
+    bottom: -20px;
+    right: -30px;
+    width: 300px;
+    transform: rotate(150deg);
+}
+
+.folha {
+    animation: balanco 8s ease-in-out infinite;
+}
+
+@keyframes balanco {
+
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.galeria-polaroid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 28px;
+  position: relative;
+  z-index: 20;
+}
+
+.polaroid-card {
+  border: none;
+  background: #fffaf3;
+  padding: 10px 10px 36px;
+  box-shadow: 0 14px 35px rgba(80, 55, 35, 0.18);
+  cursor: pointer;
+  transition: 0.35s ease;
+}
+
+.polaroid-card:nth-child(odd) {
+  transform: rotate(-3deg);
+}
+
+.polaroid-card:nth-child(even) {
+  transform: rotate(3deg);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) scale(1.04);
+}
+
+.polaroid-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+/* VIEWER EM TELA TODA */
+
+body.convite-fechado {
+  overflow: hidden;
+  height: 100vh;
+}
+
+body.convite-aberto {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+}
+
+body.sem-scroll {
+  overflow: hidden !important;
+}
+
+.foto-viewer {
+  position: fixed !important;
+  inset: 0 !important;
+
+  width: 100vw;
+  height: 100dvh;
+
+  z-index: 999999 !important;
+
+  background: rgba(248, 241, 231, 0.97);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: 0.4s ease;
+}
+
+.foto-viewer.ativo {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.foto-viewer-content {
+  width: min(1100px, 94vw);
+  max-height: 88dvh;
+
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 45px;
+
+  align-items: center;
+
+  transform: scale(0.94);
+  transition: 0.45s ease;
+}
+
+.foto-viewer.ativo .foto-viewer-content {
+  transform: scale(1);
+}
+
+.foto-viewer-content img {
+  width: 100%;
+  max-height: 80dvh;
+  object-fit: contain;
+  display: block;
+
+  background: #fffaf3;
+  padding: 12px 12px 42px;
+  box-shadow: 0 20px 60px rgba(80, 55, 35, 0.25);
+}
+
+.foto-viewer-close {
+  position: fixed;
+  top: 18px;
+  right: 28px;
+
+  z-index: 1000000;
+
+  border: none;
+  background: transparent;
+
+  font-size: 3rem;
+  color: #8a6a38;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .foto-viewer {
+    padding: 22px 16px;
+  }
+
+  .foto-viewer-content {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    text-align: center;
+  }
+
+  .foto-viewer-content img {
+    max-height: 58dvh;
+  }
+}
+
+
+
+
+
+
+
+
+.historias{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+  border-left: 2px solid #b8860b;
+  padding: 10px 0 0 0;
+}
+.card-historias{
+  border: 2px solid #b8860b;
+  border-radius: 0 15px 15px 0px;
+  text-align: left;
+  padding: 12px;
+}
+
+.card-historias p{
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.timeline {
+  position: relative;
+  max-width: 500px;
+  margin: 40px auto;
+  padding-left: 40px; /* Espaço para a linha vertical */
+}
+
+/* A linha vertical dourada que passa por trás */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40px; /* Alinha exatamente atrás dos corações */
+  width: 2px;
+  background-color: #c5a880;
+  z-index: 1;
+}
+
+.timeline-item {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+/* O Card agora gerencia o espaço */
+.timeline-card {
+  position: relative; /* Base para o posicionamento do ícone */
+  background-color: rgba(253, 250, 246, 0.8);
+  border: 1px solid #c5a880;
+  border-radius: 0 15px 15px 0px ;
+  
+  /* A MÁGICA ESTÁ AQUI: */
+  padding: 18px 20px 18px 45px; /* Aumentamos o padding da ESQUERDA (45px) para o texto não bater no coração */
+  
+  z-index: 2;
+}
+
+/* O Ícone fixado na borda esquerda do card */
+.timeline-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Centraliza verticalmente no meio do card */
+  left: -21px; /* Metade da largura dele para fora (42px / 2), dando o efeito de encaixe */
+  z-index: 3; /* Acima da linha e do card */
+
+  width: 42px;
+  height: 42px;
+  background-color: #fdfaf6;
+  border: 1px solid #e0d0bc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.heart {
+  color: #c5a880;
+  font-size: 20px;
+}
+
+/* Textos */
+.timeline-card h3 {
+  margin: 0 0 6px 0;
+  color: #4a3b32;
+  font-size: 1.15rem;
+}
+
+.timeline-card p {
+  margin: 0;
+  color: #7a6b5e;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+
+
+
+
+
+
+
+
+
+.event-details {
+  max-width: 350px;
+  margin: 40px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Coração dourado centralizado no topo */
+.top-heart {
+  color: #c5a880;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+}
+
+/* Lista de informações */
+.info-list {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+/* Cada linha (Item) */
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  text-align: left;
+  padding-left: 20px; /* Alinha um pouco mais para o centro */
+}
+
+/* Ícones dourados */
+.info-icon {
+  color: #b3956b; /* Tom dourado escuro idêntico à imagem */
+  font-size: 1.6rem; /* Tamanho dos ícones em evidência */
+  width: 40px;
+  margin-right: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Textos da listagem */
+.info-text {
+  display: flex;
+  flex-direction: column;
+  color: #4a3b32; /* Tom marrom escuro texturizado */
+  font-size: 0.95rem;
+  letter-spacing: 1px; /* Espaçamento elegante entre as letras */
+}
+
+/* Utilitários para os textos */
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.font-bold {
+  font-weight: 600;
+}
+
+.text-sub {
+  color: #6e5e53;
+  font-size: 0.9rem;
+  margin-top: 2px;
+  text-transform: none; /* Mantém letras minúsculas na cidade */
+}
+
+/* O Botão "Ver no Mapa" */
+.btn-mapa {
+  display: inline-block;
+  text-decoration: none;
+  color: #b3956b;
+  border: 1px solid #b3956b; /* Borda fina dourada */
+  border-radius: 12px; /* Cantos levemente arredondados */
+  padding: 12px 35px;
+  font-size: 0.85rem;
+  letter-spacing: 2px; /* Letras bem espaçadas como no layout */
+  text-transform: uppercase;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Efeito sutil ao passar o mouse no botão */
+.btn-mapa:hover {
+  background-color: rgba(179, 149, 107, 0.1);
+  transform: scale(1.02);
+}
+
+
+
+
+.mapa {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0 29px;
+}
