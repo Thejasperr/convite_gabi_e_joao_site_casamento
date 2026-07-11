@@ -205,8 +205,8 @@ document.addEventListener('click', function() {
 // ----------------------------------------------------
 // SUPABASE E EXIBIÇÃO DE MENSAGENS
 // ----------------------------------------------------
-const supabaseUrl = 'https://mfsdmzgwbpakmcncakyc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mc2Rtemd3YnBha21jbmNha3ljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTE2NjYzNCwiZXhwIjoyMDk2NzQyNjM0fQ.D3wnuTIi8N5_KQ6XL9LK3lntcXPqOWaBNRNYwpBBZEc';
+const supabaseUrl = 'https://vwaahcndtjvwyzxvfxuo.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFoY25kdGp2d3l6eHZmeHVvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mzc5NDI2OSwiZXhwIjoyMDk5MzcwMjY5fQ.cCXIh7klIDGxOVTRfZBct3zKZwRsg4TGdrZtIfnSP4s';
 
 // Confirma se a biblioteca do supabase carregou corretamente
 if (typeof supabase !== 'undefined') {
@@ -222,8 +222,8 @@ if (typeof supabase !== 'undefined') {
   function criarCardHTML(item) {
       return `
           <div class="card-mensagem">
-              <h3>${item.name || 'Anônimo'}</h3>
-              <p>"${item.message || item.mensagem}"</p> 
+              <h3>${item.nome || 'Anônimo'}</h3>
+              <p>"${item.mensagem || ''}"</p> 
           </div>
       `;
   }
@@ -233,7 +233,7 @@ if (typeof supabase !== 'undefined') {
       if (!containerPreview) return; 
 
       const { data, error } = await _supabase
-          .from('wedding_confirmations') 
+          .from('Casamento') 
           .select('*');
 
       if (error) {

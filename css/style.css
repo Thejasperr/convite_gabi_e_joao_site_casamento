@@ -571,6 +571,9 @@ body.sem-scroll {
 }
 
 @media (max-width: 768px) {
+  .site-casamento.revelado {
+    padding: 20px;
+}
   .foto-viewer {
     padding: 22px 16px;
   }
